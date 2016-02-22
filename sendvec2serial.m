@@ -66,6 +66,10 @@
 ##
 ## @end group
 ## @end example 
+##
+## Author: Hani Andreas Ibrahim <hani.ibrahim@gmx.de>
+##
+## License: GPL 3.0 <https://gnu.org/licenses/gpl-3.0.en.html>
 ## @end deftypefn
 
 function [status] = sendvec2serial(s_vec, s_port, s_baud, s_time, s_gui)
