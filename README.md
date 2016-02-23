@@ -18,9 +18,9 @@ You can use this function to build scripts which simulate a micro controller sen
 
 The package **"instrument-control"** is needed to run "sendvec2serial" (refer http://octave.sourceforge.net/packages.php). 
 
-On **GNU/Linux** or other Unices type `pkg install -forge instrument-control` in Octave if the package is not provided by the package manager of your GNU/Linux distribution. Take care that you have internet access. You may need to have a C/C++ compiler and "make" installed. On Debian/Ubuntu systems type `apt-get install build-essential`.
+On **GNU/Linux** or other Unices type `pkg install -forge instrument-control` in Octave if the package is not provided by the package manager of your GNU/Linux distribution. Take care that you have internet access. You may need to have a C/C++ compiler and "make" installed. On Debian/Ubuntu systems type `sudo apt-get install build-essential`.
 
-On **Microsoft Windows** you may refer http://blog.hani-ibrahim.de/en/ocatave-packages-windows-install.html for details.
+On **Microsoft Windows** just type `cd ~` and then `pkg install -forge instrument-control` while you have internet access.
 
 **Mac OS X** users can use [MacPorts](http://www.macports.org/) or [HomeBrew](http://brew.sh/). In general you have one of these package manager already installed for getting Octave itself.
 
@@ -87,6 +87,6 @@ All screenshots from Linux Mint Cinnamon. But the script works on Windows and Ma
 ## License
 Copyright (C) 2016  Hani A. Ibrahim, GPL 3.0
 
-This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+The scrips provided here ares free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>.
