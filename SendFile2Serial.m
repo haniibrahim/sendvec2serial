@@ -18,11 +18,17 @@ s_file = strcat(p, f); % concatenate path and file string
 
 % Process file selection
 if (f == 0)
-  errordlg('ERROR: File selection aborted, script terminated','SendSerialFile');
+  errordlg('ERROR: File selection aborted, script terminated','SendFile2Serial');
   error('File selection aborted, script terminated');
   break;
 endif
-s_vector = load(s_file); % Load file content in vector
+try
+  s_vector = load(s_file); % Load file content in vector
+catch
+  errordlg('ERROR: Wrong file format','SendFile2Serial');
+  error('Wrong file format');
+  break;
+end_try_catch
 
 % Port configuration
 dlg_prompt   = {'Serial port (e.g. COM1 or /dev/pts/3)', 'Baud', ... 
