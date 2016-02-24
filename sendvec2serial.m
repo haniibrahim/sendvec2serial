@@ -1,10 +1,10 @@
 ## -*- texinfo -*-
 ##
-## @deftypefn {Function File} {} sendvec2serial(@var{s_vec}, @var{s_port}, @var{s_baud})
-## @deftypefnx {Function File} {} sendvec2serial(@var{s_vec}, @var{s_port}, @var{s_baud}, @var{s_time}, @var{s_gui})
+## @deftypefn {Function File} @var{status} = sendvec2serial(@var{s_vec}, @var{s_port}, @var{s_baud})
+## @deftypefnx {Function File} @var{status} = sendvec2serial(@var{s_vec}, @var{s_port}, @var{s_baud}, @var{s_time}, @var{s_gui})
 ##
 ## Send a given @var{s_vec} of numbers to a specified serial port @var{s_port}. 
-## It sends number after number with a given time gap. 
+## It sends number after number with a (given) time gap. 
 ##
 ## You need to specify the vector @var{s_vec}, the port name @var{s_port} and the 
 ## baud rate @var{s_baud} at least. Optional the time gap @var{s_time} 
@@ -13,12 +13,6 @@
 ## are able to abort the transmission otherwise you have to wait untill the 
 ## sending is completed and you do not see any visualisation just a blinking cursor.
 ## 
-## DEPENDENCY:
-##
-## The package "instrument-control" is needed to run "sendvec2serial" 
-## (refer http://octave.sourceforge.net/packages.php). On Windows you may refer
-## http://blog.hani-ibrahim.de/en/ocatave-packages-windows-install.html also.
-##
 ## @group
 ## @verbatim 
 ##INPUT:
@@ -58,19 +52,30 @@
 ##    waitbar (default). Variable "S" stores the status number.
 ##
 ##
-## S  = sendvec2serial(vector1, '/dev/ttyUSB1', 11500, 0.5, false);
+## S  = sendvec2serial(vector1, '/dev/ttyUSB1', 115200, 0.5, false);
 ##
 ##    Send the vector "vector1" to the port "/dev/ttyUSB1" with 
-##    11500 baud with a time gap of 0.5 seconds and without a 
+##    115200 baud with a time gap of 0.5 seconds and without a 
 ##    displayed waitbar. Variable "S" stores the status number.
 ##
 ## @end group
-## @end example 
+## @end example
+## 
+## DEPENDENCY:
 ##
-## Author: Hani Andreas Ibrahim <hani.ibrahim@gmx.de>
+## The package "instrument-control" is needed to run "sendvec2serial" 
+## (refer http://octave.sourceforge.net/packages.php).
 ##
-## License: GPL 3.0 <https://gnu.org/licenses/gpl-3.0.en.html>
 ## @end deftypefn
+
+## Author: Hani Andreas Ibrahim <hani.ibrahim@gmx.de>
+## License: GPL 3.0 <https://gnu.org/licenses/gpl-3.0.en.html>
+
+## CHANGELOG
+## 
+## 2016-02-22   1.0     Initial version
+## 2016-02-24   1.1     Display "text_waitbar()" if s_gui is false and if 
+##                      package "miscellaneous" is available and loaded
 
 function [status] = sendvec2serial(s_vec, s_port, s_baud, s_time, s_gui)
   
@@ -81,7 +86,7 @@ function [status] = sendvec2serial(s_vec, s_port, s_baud, s_time, s_gui)
   if (~exist('s_time','var')); s_time = 1; endif % 1 sec. waittime per default
   if (~exist('s_gui','var')); s_gui='True'; endif % Use GUI waitbar per default    
   
-  s_len = length(s_vec); % count numbers in file
+  s_len = length(s_vec); % count numbers in vector
   
   % Check for package "instrument-control"
   try
@@ -91,43 +96,45 @@ function [status] = sendvec2serial(s_vec, s_port, s_baud, s_time, s_gui)
     return;
   end_try_catch
 
-try
-  s1 = serial(s_port, s_baud); % Init port
-catch
-  status = 3; % Portname or baud rate are not valid
-  return;
-end_try_catch
-
-srl_flush(s1); % Flush port
-
-if s_gui % Display GUI waitbar
-  % Init waitbar
-  h = waitbar(0,'','Name','Sending data ...');
-  % Send numbers
-  for i=1:s_len
-    if ishandle(h) % Check whether process is canceled in the interim
-      srl_fwrite(s1, [num2str(s_vec(i)) "\n"]); % Write number to port
-      waitbar(i/s_len,h,['... via ' ... 
-        num2str(s_baud) '-8-1 to port ' ...
-        s_port '    [' ...
-        num2str(floor(i*100/s_len)) '%]']);
-        pause(s_time) % Wait for n seconds
-    else
-      status = 4; %ERROR Transmission aborted
-      return;
-    endif
-  endfor
   try
-    close(h); % Close waitbar
-  end
-else % No waitbar displayed, only cursor blinking, no abortion
-  % Send numbers
-  for i=1:s_len
-    srl_fwrite(s1, [num2str(s_vec(i)) "\n"]); % Write number to port
-    pause(s_time) % Wait for n seconds
-  endfor
-endif
+    s1 = serial(s_port, s_baud); % Init port
+  catch
+    status = 3; % Portname or baud rate are not valid
+    return;
+  end_try_catch
 
-srl_close(s1); % Close port
-status = 0;
-return;
+  srl_flush(s1); % Flush port
+
+  if s_gui % Display GUI waitbar
+    % Init waitbar
+    h = waitbar(0,'','Name','Sending data ...');
+    for i=1:s_len
+      if ishandle(h) % Check whether process is canceled in the interim
+        srl_fwrite(s1, [num2str(s_vec(i)) "\n"]); % Write data to port
+        waitbar(i/s_len,h,['... via ' ... 
+          num2str(s_baud) '-8-1 to port ' ...
+          s_port '    [' ...
+          num2str(floor(i*100/s_len)) '%]']);
+        pause(s_time) % Wait for n seconds
+      else
+        status = 4; %ERROR Transmission aborted
+        return;
+      endif
+    endfor
+    try
+      close(h); % Close waitbar
+    end
+  else % No GUI waitbar displayed but text waitbar if available
+    for i=1:s_len
+      srl_fwrite(s1, [num2str(s_vec(i)) "\n"]); % Write data to port
+      if (~exist('text_waitbar','file') == 0)   % Display text_waitbar if ...
+        text_waitbar(i/s_len, 'Send data ...'); % ...package miscellaneous is... 
+      endif                                     % ...installed and loaded
+      pause(s_time) % Wait for n seconds        % ...otherwise display nothing.
+    endfor
+  endif
+
+  srl_close(s1); % Close port
+  status = 0;
+  return;
+endfunction

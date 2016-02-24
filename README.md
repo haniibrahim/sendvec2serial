@@ -6,12 +6,24 @@ Octave function file
 
 **Send a given vector of numbers to a specified serial port. It sends number after number with a time gap.**
 
-You need to specify a vector S_VEC, the port name S_PORT and the baud rate S_BAUD at least. Optional the time gap S_TIME (default: 1 second) can be committed and - if you want to see a visualisation - a GUI waitbar S_GUI while sending (default: true). With the waitbar you are able to abort the transmission otherwise you have to wait untill the sending is completed and you do not see any visualisation just a blinking cursor.
+You need to specify a vector S_VEC, the port name S_PORT and the baud rate S_BAUD at least. Optional the time gap S_TIME (default: 1 second) can be committed and - if you want to see a visualisation - a GUI waitbar S_GUI while sending (default: true). With the waitbar you are able to abort the transmission. 
 
 ![waitbar()](http://blog.hani-ibrahim.de/wp-content/uploads/sendvec2serial_3.png "GUI waitbar")
 
+If S_GUI = FALSE and the package "miscellaneous" is installed and loaded a text waitbar is displayed instead. But you cannot abort the transmission in comparison to the GUI.
 
-The other serial parameters are: 8 databits, 1 stopbit and no parity. In this version you cannot change these parameters by committing arguments (but feel free to extend this function).
+```
+[#################################                 ]   67%
+```
+
+If S_GUI = FALSE and "miscellaneous" is absent you just see a blinking cursor.
+
+The other serial parameters are: 
+  * 8 databits, 
+  * 1 stopbit and 
+  * no parity. 
+
+In this version you cannot change these parameters by committing arguments (but feel free to extend this function).
 
 ## Application
 
@@ -87,22 +99,16 @@ You find a demonstration script "SendFile2Serial.m" with GUI in this distributio
 
 All screenshots from Linux Mint Cinnamon. But the script works on Windows and Mac, too.
 
-## Windows 8/10 issues
-
-Unfortunately even Octave 4.0.0 does not run without any problems on Windows 8 and Windows 10. I got a warning during installation on a Windows 10 machine. On this machine all graphical output let Octave crash. But the GUI components work with one exception - the waitbar. Because it is not a native GUI widget but build with Octave's graphic output engine.
-
-This effects "sendvec2serial" because it uses Octave's waitbar. *The sample script "SendFile2Serial" will not work on Windows 8/10!*.
-
-If you want to use "sendvec2serial" on Windows8/10 machine you should set **S_GUI to FALSE**:
-
-
-```
-sendvec2serial(s_vec, s_port, s_time, false)
-```
-
 ## Matlab
 
 "sendvec2serial" is build for Octave in the first place. It may or may not work on Matlab with its Instrument-Control toolbox. But it should be easy to adapt it to Matlab.
+
+## Changelog
+
+| Date       	| Version 	| Notes                                                                                	|
+|------------	|---------	|--------------------------------------------------------------------------------------	|
+| 2016-02-22 	| 1.0     	| Initial version - GUI waitbar                                                        	|
+| 2016-02-24 	| 1.1     	| Text waitbar if S_GUI is FALSE and package 'miscellaneous' is installed and loaded 	|
 
 ## License
 Copyright (C) 2016  Hani A. Ibrahim, GPL 3.0
