@@ -32,7 +32,7 @@ end_try_catch
 
 % Port configuration
 dlg_prompt   = {'Serial port (e.g. COM1 or /dev/pts/3)', 'Baud', ... 
-                'Time rate [s] (e.g. 1 = send one number per second)'};
+                'Time gap [s] (e.g. 1 = send one number per second)'};
 dlg_title    = 'Send numbers from a file to serial port';
 dlg_lines    = 1;
 dlg_defaults = {'/dev/pts/3', '9600', '1'};

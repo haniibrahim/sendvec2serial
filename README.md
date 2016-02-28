@@ -10,7 +10,7 @@ You need to specify a vector S_VEC, the port name S_PORT and the baud rate S_BAU
 
 ![waitbar()](http://blog.hani-ibrahim.de/wp-content/uploads/sendvec2serial_3.png "GUI waitbar")
 
-If S_GUI = FALSE and the package "miscellaneous" is installed and loaded a text waitbar is displayed instead. But you cannot abort the transmission in comparison to the GUI.
+If S_GUI = FALSE and the package "miscellaneous" is installed and loaded a text waitbar is displayed instead. But you can abort the transmission with CTRL-C only.
 
 ```
 [#################################                 ]   67%
@@ -33,11 +33,11 @@ You can use this function to build scripts which simulate a micro controller sen
 
 The package **"instrument-control"** is needed to run "sendvec2serial" (refer http://octave.sourceforge.net/packages.php). 
 
-On **GNU/Linux** or other Unices type `pkg install -forge instrument-control` in Octave if the package is not provided by the package manager of your GNU/Linux distribution. Take care that you have internet access. You may need to have a C/C++ compiler and "make" installed. On Debian/Ubuntu systems type `sudo apt-get install build-essential`.
+On **GNU/Linux** or other Unices type `cd ~` and then `pkg install -forge instrument-control` in Octave if the package is not provided by the package manager of your GNU/Linux distribution. Take care that you have internet access. You may need to have a C/C++ compiler and "make" installed. On Debian/Ubuntu systems type `sudo apt-get install build-essential`.
 
-On **Microsoft Windows** just type `cd ~` and then `pkg install -forge instrument-control` while you have internet access. *Unfortunately Octave does not run without any problems on Windows 8 and Windows 10 (see below)*. 
+On **Microsoft Windows** just type `cd ~` and then `pkg install -forge instrument-control` while you have internet access. 
 
-**Mac OS X** users can use [MacPorts](http://www.macports.org/) or [HomeBrew](http://brew.sh/). In general you have one of these package manager already installed for getting Octave itself.
+**Mac OS X** users can use [MacPorts](http://www.macports.org/) or [HomeBrew](http://brew.sh/). In general you have one of these package manager already installed for getting Octave itself. But the Octave package "instrument-control" is not availabe as a port for MacPorts unfortunately. You need to do the same as Windows users have to do: `cd ~` then `pkg install -forge instrument-control`.
 
 ## Usage
 
@@ -90,6 +90,7 @@ You find a demonstration script "SendFile2Serial.m" with GUI in this distributio
 ... and specify the serial parameters and the time gap ...
 
 ![inputdlg()](http://blog.hani-ibrahim.de/wp-content/uploads/sendvec2serial_2.png)
+
 
 ... and observe the processing, abort if necessary:
 
